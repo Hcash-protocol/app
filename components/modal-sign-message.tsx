@@ -23,10 +23,7 @@ import { useStoreActions } from "../services/redux/hook";
 const ModalSignMessage = () => {
   const disconnect = useDisconnect();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const getUserDataAction = useStoreActions((state) => state.user.getData);
-  const clearUserStateAction = useStoreActions(
-    (state) => state.user.clearState
-  );
+
   const sdk = useSDK();
   const connectionStatus = useConnectionStatus();
   const address = useAddress();
@@ -42,9 +39,7 @@ const ModalSignMessage = () => {
     }
   };
 
-  const getUserData = async () => {
-    if (address && connectionStatus == "connected") getUserDataAction(address);
-  };
+  const getUserData = async () => {};
 
   useEffect(() => {
     if (network?.chainId && sdk) {
@@ -54,7 +49,6 @@ const ModalSignMessage = () => {
           localStorage.getItem("address") != address.toLowerCase() ||
           !localStorage.getItem("signature")
         ) {
-          clearUserStateAction();
           onOpen();
         } else {
           getUserData();

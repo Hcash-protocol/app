@@ -25,47 +25,24 @@ import { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../services/redux/hook";
 
 const ModalCheckConnect = () => {
-  const setIsCheckConnectAction = useStoreActions(
-    (state) => state.user.setIsCheckConnect
-  );
-
-  const clearUserStateAction = useStoreActions(
-    (state) => state.user.clearState
-  );
   const { isOpen, onOpen, onClose } = useDisclosure({
-    onClose: () => {
-      setIsCheckConnectAction({
-        isCheckConnect: false,
-        args: undefined,
-        callback: undefined,
-      });
-    },
+    onClose: () => {},
   });
   const connectionStatus = useConnectionStatus();
 
-  const isCheckConnectDataState = useStoreState(
-    (state) => state.user.isCheckConnectData
-  );
   const connectWithMetamask = useMetamask();
   const connectWithWalletConnect = useWalletConnect();
 
   useEffect(() => {
     if (connectionStatus != "connected") {
-      clearUserStateAction();
     }
 
-    if (
-      connectionStatus != "connected" &&
-      isCheckConnectDataState.isCheckConnect
-    ) {
+    if (connectionStatus != "connected") {
       onOpen();
     } else {
       onClose();
-      if (isCheckConnectDataState.args && isCheckConnectDataState.callback) {
-        isCheckConnectDataState.callback(...isCheckConnectDataState.args);
-      }
     }
-  }, [connectionStatus, isCheckConnectDataState.isCheckConnect]);
+  }, [connectionStatus, onOpen, onClose]);
 
   return (
     <Modal

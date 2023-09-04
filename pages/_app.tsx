@@ -11,7 +11,6 @@ import { ModalTransactionProvider } from "../contexts/modal-transaction";
 import ErrorBoundary from "../layouts/error-boundary";
 import store from "../services/redux/store";
 import "../styles/globals.css";
-import "../styles/h5audio.css";
 
 function App({ Component, pageProps }: AppProps) {
   return (
