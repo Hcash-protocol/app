@@ -1,6 +1,5 @@
 import {
   Button,
-  Center,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -8,21 +7,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Text,
   useDisclosure,
-  Stack,
 } from "@chakra-ui/react";
 import {
-  ChainId,
-  useActiveChain,
   useConnectionStatus,
-  useDisconnect,
   useMetamask,
-  useSwitchChain,
   useWalletConnect,
 } from "@thirdweb-dev/react";
 import { useEffect } from "react";
-import { useStoreActions, useStoreState } from "../services/redux/hook";
 
 const ModalCheckConnect = () => {
   const { isOpen, onOpen, onClose } = useDisclosure({
@@ -34,15 +28,10 @@ const ModalCheckConnect = () => {
   const connectWithWalletConnect = useWalletConnect();
 
   useEffect(() => {
-    if (connectionStatus != "connected") {
-    }
-
-    if (connectionStatus != "connected") {
-      onOpen();
-    } else {
+    if (connectionStatus === "connected") {
       onClose();
     }
-  }, [connectionStatus, onOpen, onClose]);
+  }, [connectionStatus, onClose]);
 
   return (
     <Modal
