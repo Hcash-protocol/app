@@ -50,7 +50,7 @@ const AxiosGet = <O>(url: string, config?: AxiosRequestConfig) =>
 
 const ApiServices = {
   hcash: {
-    proof: (payload: any) => AxiosGet<any>("/proof", payload),
+    proof: (txHash: string) => AxiosGet<any>(`/zk/proof/${txHash}`),
   },
 };
 

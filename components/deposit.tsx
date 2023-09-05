@@ -8,7 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDeposit } from "../hooks/hcash";
-const steps = [{ value: "0.1" }, { value: "10" }, { value: "100" }];
+const steps = [
+  { value: "0.001" },
+  { value: "0.01" },
+  { value: "0.1" },
+  { value: "10" },
+  { value: "100" },
+];
 
 const Deposit = () => {
   const [amount, setAmount] = useState<string>(steps[0].value);

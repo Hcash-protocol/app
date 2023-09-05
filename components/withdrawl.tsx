@@ -1,10 +1,11 @@
 import { Button, Input, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { useWithdrawl } from "../hooks/hcash";
 
 const Withdrawl = () => {
   const [toAddress, setToAddress] = useState<string>("");
   const [note, setNote] = useState<string>("");
-
+  const { withdrawl } = useWithdrawl();
   return (
     <>
       <Stack direction={["column"]}>
@@ -19,7 +20,17 @@ const Withdrawl = () => {
           value={toAddress}
           onChange={(e) => setToAddress(e.target.value)}
         />
-        <Button disabled={!toAddress} mt={"2"} colorScheme="teal">
+        <Button
+          onClick={() => {
+            if (toAddress && note)
+              withdrawl(toAddress, note).finally(() => {
+                setNote("");
+                setToAddress("");
+              });
+          }}
+          mt={"2"}
+          colorScheme="teal"
+        >
           Withdrawl
         </Button>
       </Stack>
