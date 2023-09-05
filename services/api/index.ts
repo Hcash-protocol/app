@@ -8,7 +8,7 @@ type SuccessResponse<T> = {
 const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3001"
-    : "http://18.177.81.128:5001";
+    : "http://18.177.81.128:5051";
 
 const axios = new Axios({
   baseURL: BASE_URL,
