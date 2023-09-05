@@ -29,7 +29,7 @@ const axios = new Axios({
 axios.interceptors.request.use((config) => {
   if (config.headers) {
     try {
-      config.headers["authorize"] = `Music protocol:${localStorage.getItem(
+      config.headers["authorize"] = `Hcash protocol:${localStorage.getItem(
         "signature"
       )}`;
     } catch (error: any) {}

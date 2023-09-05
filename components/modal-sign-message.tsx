@@ -1,24 +1,23 @@
 import {
+  Button,
+  Center,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Center,
-  Button,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
   ChainId,
-  useActiveChain,
   useAddress,
+  useChain,
   useConnectionStatus,
   useDisconnect,
   useSDK,
 } from "@thirdweb-dev/react";
 import { useEffect } from "react";
-import { useStoreActions } from "../services/redux/hook";
 
 const ModalSignMessage = () => {
   const disconnect = useDisconnect();
@@ -27,11 +26,11 @@ const ModalSignMessage = () => {
   const sdk = useSDK();
   const connectionStatus = useConnectionStatus();
   const address = useAddress();
-  const network = useActiveChain();
+  const network = useChain();
 
   const signMessage = async () => {
     if (sdk && address && connectionStatus == "connected") {
-      const signature = await sdk.wallet.sign("Music protocol");
+      const signature = await sdk.wallet.sign("Hcash protocol");
       localStorage.setItem("address", address.toLowerCase());
       localStorage.setItem("signature", signature);
       await getUserData();

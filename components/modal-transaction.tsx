@@ -9,21 +9,22 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import { useCallback, useContext, useEffect, useMemo } from "react";
-import ModalTransactionContext, {
-  defaultTxResult,
-} from "../contexts/modal-transaction";
+import { useCallback, useEffect, useMemo } from "react";
+import { useStoreActions, useStoreState } from "../services/redux/hook";
 
 const ModalTransactionComponent = () => {
-  const {
-    isOpen,
-    onClose = () => {},
-    txResult,
-    setTxResult,
-  } = useContext(ModalTransactionContext);
+  const { isOpen, transaction } = useStoreState(
+    (state) => state.modalTransaction
+  );
+
+  const setTransaction = useStoreActions(
+    (action) => action.modalTransaction.setTransaction
+  );
+
+  const onClose = useStoreActions((action) => action.modalTransaction.onClose);
 
   const handleTxState = useMemo(() => {
-    switch (txResult.txState) {
+    switch (transaction.txState) {
       case "pending":
         return (
           <>
@@ -39,7 +40,7 @@ const ModalTransactionComponent = () => {
           <>
             <ModalHeader>Transaction processing</ModalHeader>
             <ModalCloseButton />
-            {txResult.content.map((item, index) => (
+            {transaction.content.map((item, index) => (
               <ModalBody key={index}>
                 <Text fontWeight="bold">{item.title}</Text>
                 <Text color={"green"} fontSize={"sm"}>
@@ -54,7 +55,7 @@ const ModalTransactionComponent = () => {
           <>
             <ModalHeader>Transaction success</ModalHeader>
             <ModalCloseButton />
-            {txResult.content.map((item, index) => (
+            {transaction.content.map((item, index) => (
               <ModalBody key={index}>
                 <Text fontWeight="bold">{item.title}</Text>
                 <Text color={"green"} fontSize={"sm"}>
@@ -70,7 +71,7 @@ const ModalTransactionComponent = () => {
             <ModalHeader>Transaction error</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text>Reason: {txResult.reason}</Text>
+              <Text>Reason: {transaction.reason}</Text>
             </ModalBody>
           </>
         );
@@ -78,20 +79,24 @@ const ModalTransactionComponent = () => {
       default:
         break;
     }
-  }, [txResult.txState, txResult.content, txResult.reason]);
-
-  useEffect(() => {
-    if (!!isOpen) clearTxResult();
-  }, [!!isOpen]);
+  }, [transaction.txState, transaction.content, transaction.reason]);
 
   const clearTxResult = useCallback(() => {
-    setTxResult(defaultTxResult);
-  }, [setTxResult]);
+    setTransaction({
+      content: [],
+      txState: "pending",
+    });
+  }, [setTransaction]);
+
+  useEffect(() => {
+    if (isOpen) clearTxResult();
+  }, [isOpen, clearTxResult]);
+
   return (
     <Modal
       isCentered
       isOpen={!!isOpen}
-      closeOnOverlayClick={txResult.txState != "pending"}
+      closeOnOverlayClick={transaction.txState != "pending"}
       onClose={() => {
         onClose();
         clearTxResult();
@@ -108,7 +113,22 @@ const ModalTransactionComponent = () => {
 };
 
 const useModalTransaction = () => {
-  return useContext(ModalTransactionContext);
+  const { isOpen, transaction } = useStoreState(
+    (state) => state.modalTransaction
+  );
+
+  const setTransaction = useStoreActions(
+    (action) => action.modalTransaction.setTransaction
+  );
+
+  const onOpen = useStoreActions((action) => action.modalTransaction.onOpen);
+
+  return {
+    isOpen,
+    onOpen,
+    transaction,
+    setTransaction,
+  };
 };
 export { useModalTransaction };
 export default ModalTransactionComponent;
