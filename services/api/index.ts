@@ -8,7 +8,7 @@ type SuccessResponse<T> = {
 const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3001"
-    : "https://api.scimta.com";
+    : "http://18.177.81.128:5001";
 
 const axios = new Axios({
   baseURL: BASE_URL,
